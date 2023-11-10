@@ -1,0 +1,15 @@
+
+        form {
+            border: solid 2px lightgrey;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        form:focus-within {
+            border-color: orange;
+        }
+
+        tr:hover {
+            background-color: #F0F0F0;
+        }
+/* http://localhost:3000/stylesheets/assignmentsStyle.css is not found when entered in browser but the css still works so i dont think its an issue */
