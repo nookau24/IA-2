@@ -34,7 +34,7 @@
         </nav>
         <ul id="mobile-nav" class="sidenav">
             <li><a href="/"><i class="material-icons left">home</i> Home</a></li>
-            <li><a href="assignments.html"><i class="material-icons left">list</i> Assignments</a></li>
+            <li><a href="/empowering"><i class="material-icons left">list</i> Assignments</a></li>
         </ul>
     </header>
 
@@ -43,61 +43,91 @@
     <div class="container">
         <div class="section" id="list">
             <h1>Quotes</h1>
+            <tr>
+
+                <button class="btn waves-effect waves-light" href="/empowering" >
+                    <i class="material-icons right" ></i>
+                    Generate a Random Quote:
+                </button>
+            
+                                   <% var randomNum = Math.floor((Math.random() * qlist.length)); %>
+                                    <td><%= qlist[randomNum].quoteName %></td>
+                                </tr>
             <table>
                 <thead>
 
                     <tr>
-                        <th>Quote_id</th>
-                        <th>Quote</th>
+                        <th>Quote Name</th>
                         <th>Author</th>
-                        <th>Like Count</th>
+                        <th>Theme Name</th>
                         <th></th>
                     </tr>
 
                 </thead>
                 <tbody>
 
-                    <tr>
-                        <td>1</td>
-                        <td>We should all start to live before we get too old. Fear is stupid. So are regrets.</td>
-                        <td>Marilyn Monroe</td>
-                        <td>2</td>
-                    </tr>
+                    
 
+                    <% for (let i = 0; i < qlist.length; i++) { %>
                     <tr>
-                        <td>2</td>
-                        <td>There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.</td>
-                        <td>Albert Einstein</td>
-                        <td>1</td>
+                        <td><%= qlist[i].quoteName %></td>
+                        <td><%= qlist[i].author %></td>
+                        <td><%= qlist[i].themeName %></td>
+                        <td>
+                            <a class="btn-small waves-effect waves-light" href="/empowering/<%= qlist[i].quoteId %>">
+                                <i class="material-icons right">edit</i>
+                                Info/Edit
+                            </a>
+                            <a class="btn-small waves-effect waves-light red" href="/empowering/<%= qlist[i].quoteId %>/delete">
+                                <i class="material-icons right">delete</i>
+                                Delete
+                            </a>
+                        </td>
                     </tr>
+                    <% } %>
 
+                    
+                        
+
+                    
+                    </div>
                 </tbody>
+                
             </table>
         </div>
 
         <div class="section" id="add">
-            <h2>Add an quote:</h2>
-            <form id="addForm">
+            <h2>Add an assignment:</h2>
+            <form id="addForm" method="post" action="/empowering"> <!-- default action is the page's URL --> 
                 <div class="row">
                     <div class="input-field col s8">
-                        <input type="text" id="titleInput" name="title" class="validate" data-length="100" required>
-                        <label for="titleInput">Quote:</label>
+                        <input type="text" id="quoteNameInput" name="quoteName" class="validate" data-length="32" required>
+                        <label for="quoteNameInput">Quote Name (Text):</label>
                     </div>
                     <div class="input-field col s8">
-                        <input type="text" id="titleInput" name="title" class="validate" data-length="100" required>
-                        <label for="titleInput">Author:</label>
+                        <input type="text" id="authorInput" name="author" class="validate" data-length="32" required>
+                        <label for="authorInput">Author Name:</label>
                     </div>
-                    <div class="input-field col s4">
-                        <input type="number" id="priorityInput" name="priority" class="validate" min=1 max=10 value=5>
-                        <label for="priorityInput">Like Count (1-10):</label><!--should automatically compute-->
-                    </div>
+                    <div class="input-field col s6">
+                        <select id="themeInput" name="themeName" required>
+                            <option value="" disabled selected>Choose your theme</option>
+                            <option value=1>Empowering</option>
+                            <option value=2>Funny</option>
+                            <option value=3>Love</option>
+                        </select>
+                        <label for="themeInput">Theme:</label>
                 </div>
+                </div>
+               
                 <button class="btn waves-effect waves-light" type="submit">
                     <i class="material-icons right">send</i>
                     Submit
                 </button>
             </form>
         </div>
+    </div>
+    
+
     </div>
 
     <!-- Materialize JavaScript -->

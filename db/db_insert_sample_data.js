@@ -25,6 +25,9 @@ db.execute(insert_theme_sql, [2, 'Funny']);
 
 db.execute(insert_theme_sql, [3, 'Love']);
 
+db.execute(insert_theme_sql, [4, 'School']);
+
+
 //left out quoteId just like how tutorial left out assignmentId
 const insert_quote_sql = `
     INSERT INTO quotes
@@ -34,7 +37,7 @@ const insert_quote_sql = `
 `
 
 //subjectId: 2 => 'Math'
-db.execute(insert_quote_sql, ['Make today count', 'Noor Kaur', 2, 1]);
+db.execute(insert_quote_sql, ['Make today count', 'Noor Kaur Jr.', 2, 1]);
 
 //subjectId: 3 => 'Language'
 db.execute(insert_quote_sql, ['Live, laugh, love', 'Navneet Kaur', 3, 3]);
