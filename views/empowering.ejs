@@ -28,13 +28,13 @@
                 <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul id="desktop-nav" class="right hide-on-med-and-down">
                     <li><a href="/"><i class="material-icons left">home</i> Home</a></li>
-                    <li><a href="/"><i class="material-icons left">list</i> Assignments</a></li>
+                    <li><a href="/empowering"><i class="material-icons left">list</i> Empowering</a></li>
                 </ul>
             </div>
         </nav>
         <ul id="mobile-nav" class="sidenav">
             <li><a href="/"><i class="material-icons left">home</i> Home</a></li>
-            <li><a href="/empowering"><i class="material-icons left">list</i> Assignments</a></li>
+            <li><a href="/empowering"><i class="material-icons left">list</i> Empowering</a></li>
         </ul>
     </header>
 
@@ -42,17 +42,8 @@
     <!-- Actual page content! -->
     <div class="container">
         <div class="section" id="list">
-            <h1>Quotes</h1>
-            <tr>
-
-                <button class="btn waves-effect waves-light" href="/empowering" >
-                    <i class="material-icons right" ></i>
-                    Generate a Random Quote:
-                </button>
+            <h1>Empowering Quotes</h1>
             
-                                   <% var randomNum = Math.floor((Math.random() * qlist.length)); %>
-                                    <td><%= qlist[randomNum].quoteName %></td>
-                                </tr>
             <table>
                 <thead>
 
@@ -69,10 +60,13 @@
                     
 
                     <% for (let i = 0; i < qlist.length; i++) { %>
-                    <tr>
+                        <%if (qlist[i].themeId == 1){%>
+                    
                         <td><%= qlist[i].quoteName %></td>
                         <td><%= qlist[i].author %></td>
                         <td><%= qlist[i].themeName %></td>
+                    
+          
                         <td>
                             <a class="btn-small waves-effect waves-light" href="/empowering/<%= qlist[i].quoteId %>">
                                 <i class="material-icons right">edit</i>
@@ -82,10 +76,13 @@
                                 <i class="material-icons right">delete</i>
                                 Delete
                             </a>
+                            <a class = "likeicon" class="btn-small waves-effect waves-light indigo" href="/empowering/<%= qlist.quoteId %>?_method=POST">
+                                <i class="material-icons right" >favorite_border</i>
+                               </a>
                         </td>
                     </tr>
                     <% } %>
-
+                    <% } %>
                     
                         
 
@@ -97,36 +94,27 @@
         </div>
 
         <div class="section" id="add">
-            <h2>Add an assignment:</h2>
+            <h2>Add an empowering quote:</h2>
             <form id="addForm" method="post" action="/empowering"> <!-- default action is the page's URL --> 
                 <div class="row">
                     <div class="input-field col s8">
-                        <input type="text" id="quoteNameInput" name="quoteName" class="validate" data-length="32" required>
-                        <label for="quoteNameInput">Quote Name (Text):</label>
-                    </div>
-                    <div class="input-field col s8">
-                        <input type="text" id="authorInput" name="author" class="validate" data-length="32" required>
-                        <label for="authorInput">Author Name:</label>
+                        <input type="text" id="quoteName" name="quoteName" class="validate" data-length="32" required>
+                        <label for="quoteName">Quote Name:</label>
                     </div>
                     <div class="input-field col s6">
-                        <select id="themeInput" name="themeName" required>
-                            <option value="" disabled selected>Choose your theme</option>
-                            <option value=1>Empowering</option>
-                            <option value=2>Funny</option>
-                            <option value=3>Love</option>
-                        </select>
-                        <label for="themeInput">Theme:</label>
+                        <input type="text" id="author" name="author" class="validate" data-length="32" required>
+                        <label for="authorName">Author:</label>
+                    </div>              
                 </div>
-                </div>
+                
                
-                <button class="btn waves-effect waves-light" type="submit">
+                <button class="btn waves-effect waves-light" type="submit" value="hi">
                     <i class="material-icons right">send</i>
                     Submit
                 </button>
             </form>
         </div>
     </div>
-    
 
     </div>
 

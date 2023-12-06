@@ -3,7 +3,7 @@ const DEBUG = true;
 //set up the server
 const express = require( "express" );
 const app = express();
-const port = 3100;
+const port = 3200;
 const db = require('./db/db_connection');
 
 // Configure Express to use EJS
@@ -21,8 +21,27 @@ app.use( express.urlencoded({ extended: false }) );
 app.use(express.static(__dirname + '/public'));
 
 // define a route for the default home page
+const read_index_all_sql = `
+    SELECT 
+        quoteId, quoteName, author, themeName, 
+        quotes.themeId as themeId
+    FROM quotes
+    JOIN themes
+        ON quotes.themeId = themes.themeId
+    ORDER BY quotes.quoteId DESC
+    `
 app.get( "/", ( req, res ) => {
-    res.render('index');
+    db.execute(read_index_all_sql, (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            let data = { qlist : results };
+            res.render('index', data);
+        }
+    });
+    // res.render('index');
     //res.sendFile( __dirname + "/views/index.html" );
 } );
 
@@ -54,10 +73,57 @@ app.get( "/empowering", ( req, res ) => {
     });
 });
 
-// define a route for the liked quotes list page
+// define a route for the quote list page
+const read_funny_all_sql = `
+    SELECT 
+        quoteId, quoteName, author, themeName, 
+        quotes.themeId as themeId
+    FROM quotes
+    JOIN themes
+        ON quotes.themeId = themes.themeId
+    ORDER BY quotes.quoteId DESC
+`
+app.get( "/funny", ( req, res ) => {
+    db.execute(read_funny_all_sql, (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            let data = { qlist : results };
+            res.render('funny', data);
+        }
+    });
+});
+
+
+// // define a route for the liked quotes list page
+// app.get( "/likedquotes", ( req, res ) => {
+//     res.sendFile( __dirname + "/views/likedquotes.html" );
+// } );
+
+// define a route for the quote list page
+const read_likedquotes_all_sql = `
+    SELECT 
+        quoteId, quoteName, author, themeName, 
+        quotes.themeId as themeId
+    FROM quotes
+    JOIN themes
+        ON quotes.themeId = themes.themeId
+    ORDER BY quotes.quoteId DESC
+`
 app.get( "/likedquotes", ( req, res ) => {
-    res.sendFile( __dirname + "/views/likedquotes.html" );
-} );
+    db.execute(read_likedquotes_all_sql, (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            let data = { qlist : results };
+            res.render('likedquotes', data);
+        }
+    });
+});
 
 // define a route for the quote detail page
 const read_empowering_detail_sql = `
@@ -111,20 +177,19 @@ app.get("/empowering/:id/delete", ( req, res ) => {
 // define a route for quote CREATE
 const create_quote_sql = `
     INSERT INTO quotes 
-        (quoteName, author, themeName) 
+        (quoteName, author, themeId) 
     VALUES 
         (?, ?, ?);
 `
 app.post("/empowering", ( req, res ) => {
-    console.log("hi");
-    db.execute(create_quote_sql, [req.body.quoteName, req.body.author, req.body.themeName], (error, results) => {
+    db.execute(create_quote_sql, [req.body.quoteName, req.body.author, 1], (error, results) => {
         if (DEBUG)
             console.log(error ? error : results);
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
             //results.insertId has the primary key (quoteId) of the newly inserted row.
-            res.redirect(`/empowering/${results.insertId}`);
+            res.redirect("/empowering");
         }
     });
 });
@@ -147,10 +212,25 @@ app.post("/empowering/:id", ( req, res ) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else {
-            res.redirect(`/empowering/${req.params.id}`);
+            res.redirect(`/empowering`);
         }
-    });
+    }
+    );
+    
 });
+
+// //liked quotes
+// app.post("/empowering/:id", function(req,res){
+//     TestData.findById(req.params.id, function(err, theUser){
+//         if(err){
+//             console.log(err);
+//         } else {
+//             theUser.likes += 1;
+//             theUser.save();
+//             console.log(theUser.likes);
+//         }
+//     });
+// });
 
 // start the server
 app.listen( port, () => {

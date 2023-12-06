@@ -11,7 +11,12 @@
     <!-- Materialize CSS and Icons-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+<style>
+    img {
+        width: 400px;
+        height: 300px;
+    }
+</style>
 </head>
 
 <body>
@@ -43,9 +48,18 @@
                 <i class="material-icons right">arrow_forward</i> View Liked Quotes
             </a>
             <br></br>
-            <a class="btn" href="likedquotes.html"><!--replace link-->
-                <i class="material-icons right">arrow_forward</i> Random Quote
-            </a>
+        
+            <tr>
+
+                <a class="btn waves-effect waves-light" href="/" >
+                    <i class="material-icons right" ></i>
+                    Generate a Random Quote:
+                </a>
+                <br></br>
+            
+                                   <% var randomNum = Math.floor((Math.random() * qlist.length)); %>
+                                    <td><h2><em>" <%= qlist[randomNum].quoteName %> "</em></h2></td>
+                                </tr>
         <h2>
             <br></br>Themes
         </h2>
@@ -53,11 +67,11 @@
                 <i class="material-icons right">arrow_forward</i> Empowering
             </a>
             <br></br>
-            <a class="btn" href="funny.html">
+            <a class="btn" href="/funny">
                 <i class="material-icons right">arrow_forward</i> Funny
             </a>
             <br></br>
-            <a class="btn" href="love.html">
+            <a class="btn" href="/love">
                 <i class="material-icons right">arrow_forward</i> love
             </a>
     </div>
