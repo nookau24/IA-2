@@ -53,7 +53,7 @@ app.get( "/", ( req, res ) => {
 // define a route for the quote list page
 const read_empowering_all_sql = `
     SELECT 
-        quoteId, quoteName, author, themeName, 
+        quoteId, quoteName, author, themeName, likeCount,
         quotes.themeId as themeId
     FROM quotes
     JOIN themes
@@ -70,28 +70,9 @@ app.get( "/empowering", ( req, res ) => {
             let data = { qlist : results };
             res.render('empowering', data);
         }
-    });
-});
 
-// define a route for the quote list page
-const read_funny_all_sql = `
-    SELECT 
-        quoteId, quoteName, author, themeName, 
-        quotes.themeId as themeId
-    FROM quotes
-    JOIN themes
-        ON quotes.themeId = themes.themeId
-    ORDER BY quotes.quoteId DESC
-`
-app.get( "/funny", ( req, res ) => {
-    db.execute(read_funny_all_sql, (error, results) => {
-        if (DEBUG)
-            console.log(error ? error : results);
-        if (error)
-            res.status(500).send(error); //Internal Server Error
-        else {
-            let data = { qlist : results };
-            res.render('funny', data);
+        function liker(){
+            likeCount++;
         }
     });
 });
@@ -105,7 +86,7 @@ app.get( "/funny", ( req, res ) => {
 // define a route for the quote list page
 const read_likedquotes_all_sql = `
     SELECT 
-        quoteId, quoteName, author, themeName, 
+        quoteId, quoteName, author, themeName, likeCount,
         quotes.themeId as themeId
     FROM quotes
     JOIN themes
@@ -128,7 +109,7 @@ app.get( "/likedquotes", ( req, res ) => {
 // define a route for the quote detail page
 const read_empowering_detail_sql = `
     SELECT
-        quoteId, quoteName, author, themeName,
+        quoteId, quoteName, author, themeName, likeCount,
         quotes.themeId as themeId
     FROM quotes
     JOIN themes
@@ -153,6 +134,8 @@ app.get( "/empowering/:id", ( req, res ) => {
         }
     });
 });
+
+
 
 // define a route for quote DELETE
 const delete_quote_sql = `
@@ -191,6 +174,8 @@ app.post("/empowering", ( req, res ) => {
             //results.insertId has the primary key (quoteId) of the newly inserted row.
             res.redirect("/empowering");
         }
+
+        
     });
 });
 
@@ -201,12 +186,13 @@ const update_quote_sql = `
     SET
         quoteName = ?,
         author = ?,
-        themeId = ?
+        themeId = ?,
+        likeCount = ?
     WHERE
         quoteId = ?
 `
 app.post("/empowering/:id", ( req, res ) => {
-    db.execute(update_quote_sql, [req.body.quoteName, req.body.author, req.body.themeName, req.params.id], (error, results) => {
+    db.execute(update_quote_sql, [req.body.quoteName, req.body.author, req.body.themeName, req.body.likeCount, req.params.id], (error, results) => {
         if (DEBUG)
             console.log(error ? error : results);
         if (error)
@@ -218,6 +204,7 @@ app.post("/empowering/:id", ( req, res ) => {
     );
     
 });
+
 
 // //liked quotes
 // app.post("/empowering/:id", function(req,res){
@@ -231,6 +218,102 @@ app.post("/empowering/:id", ( req, res ) => {
 //         }
 //     });
 // });
+
+//FUNNY ROUTES *****!*!**!*!**!
+
+// define a route for the quote list page
+const read_funny_all_sql = `
+    SELECT 
+        quoteId, quoteName, author, themeName, 
+        quotes.themeId as themeId
+    FROM quotes
+    JOIN themes
+        ON quotes.themeId = themes.themeId
+    ORDER BY quotes.quoteId DESC
+`
+app.get( "/funny", ( req, res ) => {
+    db.execute(read_funny_all_sql, (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            let data = { funnyqlist : results };
+            res.render('funny', data);
+        }
+    });
+});
+
+//define a route for the quote detail page
+const read_funny_detail_sql = `
+    SELECT
+        quoteId, quoteName, author, themeName,
+        quotes.themeId as themeId
+    FROM quotes
+    JOIN themes
+        ON quotes.themeId = themes.themeId
+    WHERE quoteId = ?
+`
+app.get( "/funny/:id", ( req, res ) => {
+    db.execute(read_funny_detail_sql, [req.params.id], (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else if (results.length == 0)
+            res.status(404).send(`No quote found with id = "${req.params.id}"` ); // NOT FOUND
+        else {
+            let data = {funnyqdetail: results[0]}; // results is still an array, get first (only) element
+            res.render('funnydetail', data); 
+            // What's passed to the rendered view: 
+            //  hw: {quoteId: ___ , quoteName: ___ , author: ___ , 
+            //    themeName: ___ 
+            //  }
+        }
+    });
+});
+
+// define a route for quote DELETE
+const delete_funnyquote_sql = `
+    DELETE 
+    FROM
+        quotes
+    WHERE
+        quoteId = ?
+`
+app.get("/funny/:id/delete", ( req, res ) => {
+    db.execute(delete_funnyquote_sql, [req.params.id], (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            res.redirect("/funny");
+        }
+    });
+});
+
+// define a route for quote CREATE
+const create_funnyquote_sql = `
+    INSERT INTO quotes 
+        (quoteName, author, themeId) 
+    VALUES 
+        (?, ?, ?);
+`
+app.post("/funny", ( req, res ) => {
+    db.execute(create_funnyquote_sql, [req.body.quoteName, req.body.author, 2], (error, results) => {
+        if (DEBUG)
+            console.log(error ? error : results);
+        if (error)
+            res.status(500).send(error); //Internal Server Error
+        else {
+            //results.insertId has the primary key (quoteId) of the newly inserted row.
+            res.redirect("/funny");
+        }
+    });
+});
+  let likes = 0;
+
 
 // start the server
 app.listen( port, () => {

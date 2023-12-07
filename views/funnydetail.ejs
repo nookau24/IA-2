@@ -40,15 +40,15 @@
             <table>
                 <tr>
                     <th>Quote Name:</th>
-                    <td><%=qdetail.quoteName%></td>
+                    <td><%=funnyqdetail.quoteName%></td>
                 </tr>
                 <tr>
                     <th>Author:</th>
-                    <td><%=qdetail.author%></td>
+                    <td><%=funnyqdetail.author%></td>
                 </tr>
                 <tr>
                     <th>Theme:</th>
-                    <td><%=qdetail.themeName%></td>
+                    <td><%=funnyqdetail.themeName%></td>
                 </tr>
             </table>
         </div>
@@ -58,7 +58,7 @@
                 <i class="material-icons right">edit</i>
                 Edit
             </a>
-            <a class="btn-large waves-effect waves-light red right" href="/empowering/<%= qdetail.assignmentId %>/delete">
+            <a class="btn-large waves-effect waves-light red right" href="/funny/<%= funnyqdetail.assignmentId %>/delete">
                 <i class="material-icons right">delete</i>
                 Delete
             </a>
@@ -70,32 +70,27 @@
             <div class="modal-content">
 
                 <h2>Edit item:</h2>
-                <form id="updateForm" method="post" action="/empowering/<%= qdetail.quoteId %>">
+                <form id="updateForm" method="post" action="/funny/<%= funnyqdetail.quoteId %>">
                     <div class="row">
                         <div class="input-field col s8">
-                            <input type="text" id="quoteInput" name="quoteName" class="validate" data-length="45" required value="<%=qdetail.quoteName%>">
+                            <input type="text" id="quoteInput" name="quoteName" class="validate" data-length="45" required value="<%=funnyqdetail.quoteName%>">
                             <label for="quoteInput">Quote Name:</label>
                         </div>
                         <div class="input-field col s4">
-                            <input type="text" id="authorInput" name="author" class="validate" data-length="45" required value="<%=qdetail.author%>">
+                            <input type="text" id="authorInput" name="author" class="validate" data-length="45" required value="<%=funnyqdetail.author%>">
                             <label for="authorInput">Author:</label>
                         </div>
     
                         <div class="input-field col s6">
                             <select type="number" id="themeInput" name="themeName" required>
-                                <option value=1   <% if (qdetail.themeId == 1) { %> selected <% } %>> Empowering </option>
-                                <option value=2   <% if (qdetail.themeId == 2) { %> selected <% } %>> Funny </option>
-                                <option value=3   <% if (qdetail.themeId == 3) { %> selected <% } %>> Love </option>
-                                <option value=4   <% if (qdetail.themeId == 4) { %> selected <% } %>> School </option>
-                                <option value=5   <% if (qdetail.themeId == 5) { %> selected <% } %>> Existential </option>
-                                <option value=6   <% if (qdetail.themeId == 6) { %> selected <% } %>> Seasonal </option>
+                                <option value=1   <% if (funnyqdetail.themeId == 1) { %> selected <% } %>> Empowering </option>
+                                <option value=2   <% if (funnyqdetail.themeId == 2) { %> selected <% } %>> Funny </option>
+                                <option value=3   <% if (funnyqdetail.themeId == 3) { %> selected <% } %>> Love </option>
+                                <option value=4   <% if (funnyqdetail.themeId == 4) { %> selected <% } %>> School </option>
+                                <option value=5   <% if (funnyqdetail.themeId == 5) { %> selected <% } %>> Existential </option>
+                                <option value=6   <% if (funnyqdetail.themeId == 6) { %> selected <% } %>> Seasonal </option>
                               </select>
                               <label for="themeInput">Theme:</label>
-                        </div>
-
-                        <div class="input-field col s4">
-                            <input type="number" id="likeInput" name="likeCount" class="validate" data-length="45" required value="<%=qdetail.likeCount%>">
-                            <label for="likeInput">Like Count:</label>
                         </div>
     
                     </div>

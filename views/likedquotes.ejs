@@ -49,6 +49,7 @@
                         <th>Quote Name</th>
                         <th>Author</th>
                         <th>Theme Name</th>
+                        <th>Like Count</th>
                         <th></th>
                     </tr>
 
@@ -59,9 +60,13 @@
 
                     <% for (let i = 0; i < qlist.length; i++) { %>
                     <tr>
+                        <%if (qlist[i].likeCount > 0){%>
                         <td><%= qlist[i].quoteName %></td>
                         <td><%= qlist[i].author %></td>
                         <td><%= qlist[i].themeName %></td>
+                        <%if (qlist[i].likeCount > 0 && qlist[i].likeCount % 2 == 1) %>
+                                <td>Liked</td>
+                        
                         <td>
                             <a class="btn-small waves-effect waves-light" href="/empowering/<%= qlist[i].quoteId %>">
                                 <i class="material-icons right">edit</i>
@@ -72,7 +77,8 @@
                                 Delete
                             </a>
                         </td>
-                    </tr>
+                   </tr>
+                    <% } %>
                     <% } %>
 
                     

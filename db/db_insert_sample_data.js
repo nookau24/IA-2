@@ -43,7 +43,7 @@ db.execute(insert_quote_sql, ['Make today count', 'Noor Kaur Jr.', 2, 1]);
 db.execute(insert_quote_sql, ['Live, laugh, love', 'Navneet Kaur', 3, 3]);
 
 //subjectId: 1 => 'Comp Sci'
-db.execute(insert_quote_sql, ['Go bananas!', 'Curious George', null, 2]);
+db.execute(insert_quote_sql, ['Go bananas!', 'Curious George', 3, 2]);
 
 
 /**** Create some additional subjects and assignments that aren't in the prototypes ****/
